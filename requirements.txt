@@ -1,8 +1,7 @@
+fastapi
+uvicorn
 aiogram
-gspread
-oauth2client
+aiosqlite
+jinja2
+python-multipart
 apscheduler
-geopy
-google-auth
-google-auth-oauthlib
-google-auth-httplib2
