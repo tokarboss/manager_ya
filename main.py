@@ -2,6 +2,7 @@ import asyncio
 import aiosqlite
 import os
 import json
+import socket
 from datetime import datetime
 from contextlib import asynccontextmanager
 
@@ -123,6 +124,9 @@ async def lifespan(app: FastAPI):
     yield 
     scheduler.shutdown()
     polling_task.cancel()
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    print(f"--- LOG: Бот запущен на IP: {ip_address} ---")
     await bot.session.close()
 
 app = FastAPI(lifespan=lifespan)
@@ -298,3 +302,4 @@ async def finish(message: types.Message, state: FSMContext):
 if __name__ == "__main__":
 
     uvicorn.run(app, host="127.0.0.1", port=8000)
+
