@@ -19,6 +19,16 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import requests
+
+try:
+    # Запрос к сервису, который просто возвращает твой внешний IP
+    current_ip = requests.get('https://api.ipify.org').text
+    print(f"\n🚀 СЕРВЕР ЗАПУЩЕН!")
+    print(f"🌍 ВНЕШНИЙ IP БОТА: {current_ip}")
+    print(f"🔗 АДМИНКА (ВЕРОЯТНО): http://{current_ip}:3000\n")
+except Exception as e:
+    print(f"❌ Не удалось определить IP: {e}")
 
 # --- НАСТРОЙКИ ---
 TOKEN = "8236277660:AAE193jYrtDjbUyaKJcDlCnwyrqoZg5qnRE"
@@ -303,6 +313,7 @@ if __name__ == "__main__":
     # Пытаемся взять порт из настроек хостинга, если нет — ставим 8080
     port = int(os.environ.get("PORT", 8080)) 
     uvicorn.run(app, host="0.0.0.0", port=port)
+
 
 
 
