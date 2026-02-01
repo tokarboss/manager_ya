@@ -242,6 +242,13 @@ async def handle_status(cb: types.CallbackQuery):
 async def send_link(message: types.Message):
     await message.answer(f"Партнерская ссылка:\n`{PARTNER_URL}?start={message.from_user.id}`", parse_mode="Markdown")
 
+@dp.message(F.text == "/myip")
+async def get_server_ip(message: types.Message):
+    # Только для тебя (замени на свой ID, если хочешь безопасности)
+    import requests
+    ip = requests.get('https://api.ipify.org').text
+    await message.answer(f"🌐 IP сервера: `{ip}`", parse_mode="Markdown")
+
 # --- АНКЕТА ---
 @dp.message(CommandStart())
 async def cmd_start(message: types.Message, state: FSMContext):
@@ -311,8 +318,9 @@ async def finish(message: types.Message, state: FSMContext):
 
 if __name__ == "__main__":
     # Пытаемся взять порт из настроек хостинга, если нет — ставим 8080
-    port = int(os.environ.get("PORT", 8080)) 
+    port = int(os.environ.get("PORT", 3000)) 
     uvicorn.run(app, host="0.0.0.0", port=port)
+
 
 
 
