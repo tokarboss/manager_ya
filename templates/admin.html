@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HR Platform CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <script>setTimeout(() => location.reload(), 30000);</script>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2><i class="fas fa-shield-alt me-2 text-primary"></i> HR CORE</h2>
+        
+        <div class="mt-4 mb-5">
+            <p class="small text-uppercase fw-bold opacity-50 mb-3">Управление</p>
+            <form action="/toggle_auto" method="post">
+                <button type="submit" class="btn btn-toggle w-100 {{ 'btn-success text-white' if auto_dist else 'btn-outline-light' }}">
+                    <i class="fas fa-robot me-2"></i> {{ 'Авто: ВКЛ' if auto_dist else 'Авто: ВЫКЛ' }}
+                </button>
+            </form>
+        </div>
+
+        <p class="small text-uppercase fw-bold opacity-50 mb-3">Команда</p>
+        <div class="team-list small mb-4">
+            {% for m in managers %}
+            <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style="background: rgba(255,255,255,0.03)">
+                <span>
+                    <span class="status-dot {{ 'online' if m.status == 'На смене' else 'offline' }}"></span>
+                    {{ m.name }}
+                </span>
+                <form action="/delete_manager/{{ m.tg_id }}" method="post" onsubmit="return confirm('Удалить менеджера?')">
+                    <button type="submit" class="btn btn-link text-danger p-0 border-0 shadow-none"><i class="fas fa-trash-alt"></i></button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4 p-3 rounded" style="background: rgba(0,0,0,0.2)">
+            <p class="small text-white-50 fw-bold mb-3 text-uppercase" style="font-size: 0.7rem;">Новый менеджер</p>
+            <form action="/add_manager" method="post">
+                <div class="mb-2">
+                    <label class="small text-white-50 mb-1 d-block" style="font-size: 0.65rem;">TELEGRAM ID</label>
+                    <input name="tg_id" type="number" placeholder="12345678" class="form-control form-control-sm bg-transparent border-secondary text-white shadow-none" required>
+                </div>
+                <div class="mb-2">
+                    <label class="small text-white-50 mb-1 d-block" style="font-size: 0.65rem;">ИМЯ</label>
+                    <input name="name" type="text" placeholder="Артем" class="form-control form-control-sm bg-transparent border-secondary text-white shadow-none" required>
+                </div>
+                <div class="mb-3">
+                    <label class="small text-white-50 mb-1 d-block" style="font-size: 0.65rem;">USERNAME (БЕЗ @)</label>
+                    <input name="username" type="text" placeholder="manager_hr" class="form-control form-control-sm bg-transparent border-secondary text-white shadow-none">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="stats-grid">
+            <div class="stat-item shadow-sm">
+                <div><small class="text-muted">Всего заявок</small><h3>{{ stats.total }}</h3></div>
+                <i class="fas fa-layer-group text-primary opacity-25 fa-2x"></i>
+            </div>
+            <div class="stat-item shadow-sm" style="border-bottom: 3px solid #10b981">
+                <div><small class="text-muted">Лиды</small><h3>{{ stats.leads }}</h3></div>
+                <i class="fas fa-check-double text-success opacity-25 fa-2x"></i>
+            </div>
+            <div class="stat-item shadow-sm" style="border-bottom: 3px solid #f43f5e">
+                <div><small class="text-muted">Отказы</small><h3>{{ stats.refusals }}</h3></div>
+                <i class="fas fa-times text-danger opacity-25 fa-2x"></i>
+            </div>
+        </div>
+
+        <div class="data-panel shadow-sm">
+            <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-white">
+                <h5 class="m-0 fw-bold">Список кандидатов</h5>
+                <span class="badge bg-light text-dark border">Live Update 30s</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle bg-white">
+                    <thead>
+                        <tr>
+                            <th>Кандидат</th>
+                            <th>Детали / Контакты</th>
+                            <th>Менеджер</th>
+                            <th>Статус</th>
+                            <th class="text-end">Удалить</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in apps %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold">{{ a.client_name }}</div>
+                                <div class="text-muted small">@{{ a.client_username if a.client_username else 'no_user' }}</div>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary mb-1">{{ a.phone }}</div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    {% set details = a.city.split('|') %}
+                                    {% if details|length >= 3 %}
+                                        <span class="badge bg-light text-dark border"><i class="fas fa-map-marker-alt text-danger me-1"></i> {{ details[0] }}</span>
+                                        <span class="badge bg-light text-dark border"><i class="fas fa-passport text-info me-1"></i> {{ details[1] }}</span>
+                                        <span class="badge bg-light text-dark border"><i class="fas fa-car text-warning me-1"></i> {{ details[2] }}</span>
+                                    {% else %}
+                                        <span class="text-muted small">{{ a.city }}</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <form action="/assign_manually/{{ a.id }}" method="post" class="d-flex gap-2">
+                                    <select name="manager_id" class="form-select form-select-sm border-light bg-light" style="width: 140px;" required>
+                                        <option disabled selected value="">{{ a.mgr_name if a.mgr_name else 'Назначить' }}</option>
+                                        {% for m in managers %}
+                                        <option value="{{ m.tg_id }}">{{ m.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i></button>
+                                </form>
+                            </td>
+                            <td>
+                                {% if a.status == '✅ ЛИД' %}
+                                    <span class="badge bg-success-subtle text-success px-3">ЛИД</span>
+                                {% elif a.status == '❌ НЕ ЛИД' %}
+                                    <span class="badge bg-danger-subtle text-danger px-3">ОТКАЗ</span>
+                                {% elif a.status == 'В работе' %}
+                                    <span class="badge bg-primary-subtle text-primary px-3">В РАБОТЕ</span>
+                                {% else %}
+                                    <span class="badge bg-secondary-subtle text-secondary px-3">НОВАЯ</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <form action="/delete_app/{{ a.id }}" method="post" onsubmit="return confirm('Удалить?')">
+                                    <button type="submit" class="btn btn-link text-muted p-0"><i class="fas fa-trash-alt"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

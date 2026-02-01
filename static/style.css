@@ -1,0 +1,140 @@
+:root {
+    --side-bg: #1e293b;
+    --main-bg: #f1f5f9;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --border: #e2e8f0;
+    --white: #ffffff;
+    --text-muted: #94a3b8;
+}
+
+body {
+    background-color: var(--main-bg);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #334155;
+    margin: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    background: var(--side-bg);
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    color: var(--text-muted);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.sidebar h2 { color: white; font-size: 1.25rem; margin-bottom: 32px; font-weight: 700; letter-spacing: -0.02em; }
+
+/* --- ИСПРАВЛЕНИЕ ВИДИМОСТИ ФОРМ В САЙДБАРЕ --- */
+.sidebar .form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+}
+
+/* Стилизация текста-подсказки (чтобы его было видно!) */
+.sidebar .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+}
+
+.sidebar .form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    outline: none;
+}
+
+/* Кнопка в сайдбаре */
+.sidebar .btn-primary {
+    background: var(--accent);
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    border: none;
+    transition: 0.2s ease;
+}
+
+.sidebar .btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+/* Main Canvas */
+.main-content { margin-left: 260px; padding: 40px; }
+
+/* Stats Grid */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+.stat-item {
+    background: var(--white);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+.stat-item:hover { transform: translateY(-2px); }
+.stat-item h3 { margin: 0; font-size: 1.75rem; color: var(--side-bg); font-weight: 700; }
+.stat-item small { color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Table Container */
+.data-panel {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.table thead { background: #f8fafc; }
+.table th { 
+    border-bottom: 1px solid var(--border); 
+    padding: 16px; 
+    font-size: 0.75rem; 
+    text-transform: uppercase; 
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+.table td { padding: 16px; border-bottom: 1px solid #f1f5f9; }
+
+/* Статусы и Бейджи */
+.badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+/* Pulsing Status Dot */
+.status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 10px; }
+.online { 
+    background: #10b981; 
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    animation: pulse 2s infinite;
+}
+.offline { background: #94a3b8; opacity: 0.6; }
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Инпуты в таблице */
+.form-select-sm {
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: #f8fafc;
+}

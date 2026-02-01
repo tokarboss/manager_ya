@@ -1,0 +1,8 @@
+aiogram
+gspread
+oauth2client
+apscheduler
+geopy
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
