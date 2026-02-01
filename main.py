@@ -22,7 +22,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # Пробуем импортировать requests для определения IP
 try:
-import requests
+    import requests
 except ImportError:
     requests = None
 
