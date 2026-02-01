@@ -1,4 +1,4 @@
-import asyncio1
+import asyncio
 import aiosqlite
 import os
 import json
@@ -303,6 +303,7 @@ if __name__ == "__main__":
     # Пытаемся взять порт из настроек хостинга, если нет — ставим 8080
     port = int(os.environ.get("PORT", 8080)) 
     uvicorn.run(app, host="0.0.0.0", port=port)
+
 
 
 
