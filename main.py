@@ -20,7 +20,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # --- НАСТРОЙКИ ---
-TOKEN = "8545497161:AAFTJK3FT9fyEyF54KJrhMiFa3xk-7ah9Ao"
+TOKEN = "8236277660:AAE193jYrtDjbUyaKJcDlCnwyrqoZg5qnRE"
 DB_PATH = "bot_system.db"
 CONFIG_FILE = "managers_config.json"
 PARTNER_URL = "https://clck.ru/3RaGGm" # Твоя партнерская ссылка
@@ -296,4 +296,5 @@ async def finish(message: types.Message, state: FSMContext):
     await state.clear()
 
 if __name__ == "__main__":
+
     uvicorn.run(app, host="127.0.0.1", port=8000)
