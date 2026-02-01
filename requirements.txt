@@ -5,3 +5,4 @@ aiosqlite
 jinja2
 python-multipart
 apscheduler
+requests
